@@ -1,6 +1,10 @@
-arduino-stepper-speedometer
-===========================
+#Arduino Stepper Speedometer
 
-Arduino based speedometer using a stepper motor
+##Wire your circuit as shown:
+![speedometer-wiring](http://cdaringe.net/img/speedometer.png)
 
-![wiring-diagram](https://raw.githubusercontent.com/cdaringe/arduino-stepper-speedometer/master/speedometer.svg)
+##Configure the firmware to your liking
+* Open speed.ino
+* Adjust the #defines to match your speedometer
+* Upload
+* Go!

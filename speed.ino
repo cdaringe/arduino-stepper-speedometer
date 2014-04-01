@@ -5,8 +5,8 @@
  */
 volatile int pulseCount = 0;
 int sensepin = 2;
-int dirpin = 8;
-int steppin = 9;
+int dirpin = 11;
+int steppin = 12;
 
 #define MAXSPEED 180
 #define MINSPEED 0

@@ -10,35 +10,38 @@ int steppin = 12;
 
 #define MAXSPEED 180
 #define MINSPEED 0
-#define PULSECOUNTMAXSPEED (9) //8 microsteps [treated as steps] will mean 5 pulses maps to 180
+#define PULSECOUNTMAXSPEED (8) //number of pulses to map to max speed
+#define SPEEDBUFFSIZE 10
 
+#define MOTORDELAYMICRO 200 //delay between pulses for motor.  You should make this as small as possible.  Start here
 
 double interval_end;
-#define SPEEDBUFFSIZE 20
-int speedCounts[SPEEDBUFFSIZE]; //array of past five speed/pulse counts
-int interval_t = 150; //ms
+int speedCounts[SPEEDBUFFSIZE]; //array of speed/pulse counts
+int interval_t = 100; //ms
 
 int currentStep = 0;
+
+
 
 void setup() {
   Serial.begin(38400);
   Serial.println("Go go gadget speedometer!");
   pinMode(sensepin, INPUT);
-  digitalWrite(sensepin,HIGH);       // turn on pullup 
+  digitalWrite(sensepin,HIGH);
   pinMode(dirpin, OUTPUT);
   pinMode(steppin, OUTPUT);
   attachInterrupt(0, pulseSense, FALLING);
   interval_end = millis() + interval_t;
 }
 
+
+
 void pulseSense() {
   ++pulseCount;  
 }
 
 void loop() {
-  if (millis() < interval_end) {
-    //still fill this speed interval
-  } else {
+  if (millis() > interval_end) {
     shiftArray(speedCounts,SPEEDBUFFSIZE);
     speedCounts[0] = pulseCount;
     pulseCount = 0; //reset counter
@@ -59,10 +62,9 @@ void shiftArray(int* arr, int arrSize) {
 }
 
 void moveDial() {
- //convert speed to position on dial
+   //convert speed to position on dial
 
-  //int destStep = map(speedCounts[0],0,PULSECOUNTMAXSPEED,MINSPEED,MAXSPEED);
-   
+   //int destStep = map(speedCounts[0],0,PULSECOUNTMAXSPEED,MINSPEED,MAXSPEED);
    double approxDestStep =0;
    for (int i = 0; i<SPEEDBUFFSIZE; ++i) {
      approxDestStep += map(speedCounts[i],0,PULSECOUNTMAXSPEED,MINSPEED,MAXSPEED)/SPEEDBUFFSIZE; //creates average of past speeds
@@ -70,7 +72,7 @@ void moveDial() {
    int destStep = (int) approxDestStep;
       
 
-   Serial.print("curr: "); Serial.print(currentStep);Serial.print(" // dest: "); Serial.print(destStep);Serial.print(" // pulses: "); Serial.println(speedCounts[0]);
+   //Serial.print("curr: "); Serial.print(currentStep);Serial.print(" // dest: "); Serial.print(destStep);Serial.print(" // pulses: "); Serial.println(speedCounts[0]);
    
     //set direction of move
     int stepInc = 0;
@@ -84,9 +86,9 @@ void moveDial() {
    
     while (currentStep != destStep)
     {
-      digitalWrite(steppin, LOW);  // This LOW to HIGH change is what creates the
-      digitalWrite(steppin, HIGH); // "Rising Edge" so the easydriver knows to when to step.
-      delayMicroseconds(250);      // This delay time is close to top speed for this
+      digitalWrite(steppin, LOW); 
+      digitalWrite(steppin, HIGH); // easydriver acts on HIGH
+      delayMicroseconds(MOTORDELAYMICRO);
       currentStep += stepInc;
     }
 }

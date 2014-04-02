@@ -1,4 +1,5 @@
 #Arduino Stepper Speedometer
+This code enables you to create a speedometer with a simple arduino and stepper driver circuit.  It is applied in the most basic of implementations.  Say you are hypothetically measuring a vehicle's speed, and you have a magnetic sensor on the wheel.  The speedometer code adds how many times that sensor ticks as the wheel spins, calculates your speed from that value, and maps that to a speedometer dial position!  It does basic (average) smoothing as well.
 
 ##Wire it up!
 * The type of Arduino board does not matter, nor do you need to insert it into a breadboard.

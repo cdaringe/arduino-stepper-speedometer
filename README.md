@@ -4,7 +4,8 @@ This code enables you to create a speedometer with a simple arduino and stepper 
 ##Wire it up!
 * The type of Arduino board does not matter, nor do you need to insert it into a breadboard.
 * Your 'sense' circuit used to detect speed may be different than the one shown below.  The code is defaulted to have the sensing circuit pull the Arduino sense pin down to ground, vs. up to 5V, to trigger a speed/motion detect.
-![speedometer-circuit](http://cdaringe.net/img/speedometer4.png)
+
+![speedometer-circuit](https://raw.githubusercontent.com/cdaringe/arduino-stepper-speedometer/master/speedometer4.png)
 
 ##Configure & Upload!
 * Open speed.ino
